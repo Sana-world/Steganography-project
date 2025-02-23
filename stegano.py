@@ -38,6 +38,29 @@ def encrypt_message():
     os.startfile("encryptedImage.jpg")
     messagebox.showinfo("Success", "Image encrypted and saved as 'encryptedImage.jpg'.")
 
+def decrypt_message():
+    global img, password
+    if img is None:
+        messagebox.showerror("Error", "Please load an image first!")
+        return
+
+    pas = pass_entry.get()
+    if password != pas:
+        messagebox.showerror("Error", "Incorrect passcode!")
+        return
+
+    message = ""
+    n, m, z = 0, 0, 0
+    for _ in range(len(msg_entry.get("1.0", tk.END).strip())):
+        message += chr(img[n, m, z])
+        n += 1
+        m += 1
+        z = (z + 1) % 3
+
+    output_entry.delete(0, tk.END)
+    output_entry.insert(0, message)
+    messagebox.showinfo("Decrypted Message", f"Decrypted message: {message}")
+
 # Create GUI
 root = tk.Tk()
 root.title("Steganography Tool")
@@ -81,3 +104,4 @@ output_entry = tk.Entry(root, width=50)
 output_entry.pack()
 
 root.mainloop()
+
